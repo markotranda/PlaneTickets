@@ -1,0 +1,12 @@
+D:\projects\GET\PlaneTickets\Backend\PlaneTicketsBack\PlaneTickets.Contracts\bin\Debug\net7.0\PlaneTickets.Contracts.deps.json
+D:\projects\GET\PlaneTickets\Backend\PlaneTicketsBack\PlaneTickets.Contracts\bin\Debug\net7.0\PlaneTickets.Contracts.dll
+D:\projects\GET\PlaneTickets\Backend\PlaneTicketsBack\PlaneTickets.Contracts\bin\Debug\net7.0\PlaneTickets.Contracts.pdb
+D:\projects\GET\PlaneTickets\Backend\PlaneTicketsBack\PlaneTickets.Contracts\obj\Debug\net7.0\PlaneTickets.Contracts.csproj.AssemblyReference.cache
+D:\projects\GET\PlaneTickets\Backend\PlaneTicketsBack\PlaneTickets.Contracts\obj\Debug\net7.0\PlaneTickets.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+D:\projects\GET\PlaneTickets\Backend\PlaneTicketsBack\PlaneTickets.Contracts\obj\Debug\net7.0\PlaneTickets.Contracts.AssemblyInfoInputs.cache
+D:\projects\GET\PlaneTickets\Backend\PlaneTicketsBack\PlaneTickets.Contracts\obj\Debug\net7.0\PlaneTickets.Contracts.AssemblyInfo.cs
+D:\projects\GET\PlaneTickets\Backend\PlaneTicketsBack\PlaneTickets.Contracts\obj\Debug\net7.0\PlaneTickets.Contracts.csproj.CoreCompileInputs.cache
+D:\projects\GET\PlaneTickets\Backend\PlaneTicketsBack\PlaneTickets.Contracts\obj\Debug\net7.0\PlaneTickets.Contracts.dll
+D:\projects\GET\PlaneTickets\Backend\PlaneTicketsBack\PlaneTickets.Contracts\obj\Debug\net7.0\refint\PlaneTickets.Contracts.dll
+D:\projects\GET\PlaneTickets\Backend\PlaneTicketsBack\PlaneTickets.Contracts\obj\Debug\net7.0\PlaneTickets.Contracts.pdb
+D:\projects\GET\PlaneTickets\Backend\PlaneTicketsBack\PlaneTickets.Contracts\obj\Debug\net7.0\ref\PlaneTickets.Contracts.dll
