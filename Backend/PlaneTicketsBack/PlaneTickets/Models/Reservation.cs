@@ -70,12 +70,6 @@ public class Reservation
         ReservationStatus = ReservationStatus.canceled;
     }
 
-    public bool SetFlight(Flight flight)
-    {
-        _Flight = flight;
-        return true;
-    }
-
     public ErrorOr<bool> ConfirmReservation(int availableSeats)
     {
         List<Error> errors = new();

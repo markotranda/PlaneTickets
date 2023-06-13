@@ -56,7 +56,7 @@ public class ReservationController : ApiController
         ErrorOr<Reservation> getReservationResult = _reservationService.GetReservation(id);
 
         return getReservationResult.Match(
-            reservation => Ok(MapReservationResponse(reservation)),
+            reservation => Ok(MapReservationResponseDetailed(reservation)),
             errors => Problem(errors));
     }
 

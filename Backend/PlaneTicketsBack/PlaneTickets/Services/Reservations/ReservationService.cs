@@ -1,4 +1,5 @@
 using ErrorOr;
+using Microsoft.EntityFrameworkCore;
 using PlaneTickets.Contracts.Reservation;
 using PlaneTickets.Models;
 using PlaneTickets.Persistence;
@@ -39,14 +40,13 @@ public class ReservationService : IReservationService
 
     public ErrorOr<Reservation> GetReservation(Guid id)
     {
-        if (_dbContext.Reservations.Find(id) is Reservation reservation)
-        {
-            return reservation;
-        }
-        else
-        {
-            return Errors.Reservation.NotFound;
-        }
+        var reservation = _dbContext.Reservations
+                            .Include(r => r._Flight)
+                            .ThenInclude(f => f.AirportDeparturePlace)
+                            .Include(r => r._Flight)
+                            .ThenInclude(f => f.AirportArrivalPlace)
+                            .FirstOrDefault();
+        return reservation ?? (ErrorOr<Reservation>)Errors.Reservation.NotFound;
     }
 
     public ErrorOr<List<Reservation>> GetReservations(GetReservationsRequest request, string? username, string? role)
@@ -57,8 +57,12 @@ public class ReservationService : IReservationService
         if (username != null && role == "Visitor") { query = query.Where(f => f._UserUsername == username); }
         if (request.Tickets != null) { query = query.Where(f => f.Tickets == request.Tickets); }
         if (request.ReservationStatus != null) { query = query.Where(f => f.ReservationStatus == request.ReservationStatus); }
+        query = query
+            .Include(r => r._Flight)
+            .ThenInclude(f => f.AirportDeparturePlace)
+            .Include(r => r._Flight)
+            .ThenInclude(f => f.AirportArrivalPlace);
         List<Reservation> reservations = query.ToList();
-        reservations.ForEach(SetReservation);
         if (reservations.Count > 0)
         {
             return reservations;
@@ -66,25 +70,6 @@ public class ReservationService : IReservationService
         else
         {
             return Errors.Reservation.NotFound;
-        }
-    }
-
-    private void SetReservation(Reservation r)
-    {
-        var flight = _dbContext.Flights.Find(r.FlightId);
-        if (flight is not null)
-        {
-            r.SetFlight(flight);
-            var departurePlace = _dbContext.Airports.Find(flight.AirportDeparturePlaceId);
-            if (departurePlace is not null)
-            {
-                flight.SetDeparturePlace(departurePlace);
-            }
-            var arrivalPlace = _dbContext.Airports.Find(flight.AirportArrivalPlaceId);
-            if (arrivalPlace is not null)
-            {
-                flight.SetArrivalPlace(arrivalPlace);
-            }
         }
     }
 

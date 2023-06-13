@@ -90,18 +90,6 @@ public class Flight
         FlightStatus = FlightStatus.canceled;
     }
 
-    public bool SetDeparturePlace(Airport airport)
-    {
-        AirportDeparturePlace = airport;
-        return true;
-    }
-
-    public bool SetArrivalPlace(Airport airport)
-    {
-        AirportArrivalPlace = airport;
-        return true;
-    }
-
     public static ErrorOr<Flight> From(CreateFlightRequest request)
     {
         return Create(

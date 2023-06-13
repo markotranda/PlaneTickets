@@ -1,4 +1,5 @@
 using ErrorOr;
+using Microsoft.EntityFrameworkCore;
 using PlaneTickets.Contracts.Flight;
 using PlaneTickets.Contracts.Reservation;
 using PlaneTickets.Models;
@@ -18,25 +19,10 @@ public class FlightService : IFlightService
 
     public ErrorOr<Created> CreateFlight(Flight flight)
     {
-        SetAirports(flight);
         _dbContext.Add(flight);
         _dbContext.SaveChanges();
 
         return Result.Created;
-    }
-
-    private void SetAirports(Flight flight)
-    {
-        var departurePlace = _dbContext.Airports.Find(flight.AirportDeparturePlaceId);
-        if (departurePlace is not null)
-        {
-            flight.SetDeparturePlace(departurePlace);
-        }
-        var arrivalPlace = _dbContext.Airports.Find(flight.AirportArrivalPlaceId);
-        if (arrivalPlace is not null)
-        {
-            flight.SetArrivalPlace(arrivalPlace);
-        }
     }
 
     public ErrorOr<Deleted> DeleteFlight(Guid id)
@@ -55,15 +41,11 @@ public class FlightService : IFlightService
 
     public ErrorOr<Flight> GetFlight(Guid id)
     {
-        if (_dbContext.Flights.Find(id) is Flight flight)
-        {
-            SetAirports(flight);
-            return flight;
-        }
-        else
-        {
-            return Errors.Flight.NotFound;
-        }
+        var flight = _dbContext.Flights
+                                    .Include(f => f.AirportDeparturePlace)
+                                    .Include(f => f.AirportArrivalPlace)
+                                    .FirstOrDefault();
+        return flight ?? (ErrorOr<Flight>)Errors.Flight.NotFound;
     }
 
     public ErrorOr<List<Flight>> GetFlights(GetFlightsRequest request, string role)
@@ -78,8 +60,10 @@ public class FlightService : IFlightService
         if (request.PassengerNumber != null) { query = query.Where(f => f.PassengerNumber == request.PassengerNumber); }
         if (request.FlightStatus != null) { query = query.Where(f => f.FlightStatus == request.FlightStatus); }
         if (role == "Visitor") { query = query.Where(f => f.FlightStatus == FlightStatus.new_); }
+        query = query
+            .Include(f => f.AirportDeparturePlace)
+            .Include(f => f.AirportArrivalPlace);
         List<Flight> flights = query.ToList();
-        flights.ForEach(SetAirports);
         if (flights.Count > 0)
         {
             return flights;
